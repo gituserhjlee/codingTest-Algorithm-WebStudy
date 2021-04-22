@@ -1,0 +1,28 @@
+백준 이분탐색 실버4 숫자카드2 
+```python
+import sys
+def binary(i,n,nlist):
+    start, end=0,n-1
+    while start<=end:
+        mid=(start+end)//2
+        if nlist[mid]==i:
+            return nlist[start:end+1].count(i) #해당 범위내에서 개수 카운트. 왜냐하면 해당 범위내에만 이 숫자가 있기때문
+        elif nlist[mid]>i:
+            end=mid-1
+        else:
+            start=mid+1
+    return 0
+     
+input=sys.stdin.readline
+n=int(input())
+nlist=list(map(int, input().split()))#상근이가 가진거
+nlist.sort()
+m=int(input())
+mlist=list(map(int, input().split()))#이것 중에서 몇개 가졌는지
+arr={}
+for i in mlist:
+    if i not in arr:
+        arr[i]=binary(i,n,nlist)
+print(' '.join(str(arr[x]) for x in mlist))# 한칸씩 띄어서 출력하려고 ' '로 조인 
+
+```
