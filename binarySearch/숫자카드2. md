@@ -1,6 +1,7 @@
 백준 이분탐색 실버4 숫자카드2 
-```python
-import sys
+
+ ```python 
+ import sys
 def binary(i,n,nlist):
     start, end=0,n-1
     while start<=end:
@@ -23,6 +24,5 @@ arr={}
 for i in mlist:
     if i not in arr:
         arr[i]=binary(i,n,nlist)
-print(' '.join(str(arr[x]) for x in mlist))# 한칸씩 띄어서 출력하려고 ' '로 조인 
-
-```
+print(' '.join(str(arr[x]) for x in mlist))# 한칸씩 띄어서 출력하려고 ' '로 조인
+ ```
