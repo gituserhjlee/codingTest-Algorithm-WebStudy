@@ -1,6 +1,22 @@
 ### 서블릿 컨테이너: 서블릿의 생성주기에 대한 모든 권한을 개발자가 아니라 컨테이너가 가짐.(IoC)   
 ### 스프링 IoC 컨테이너: Object의 모든 작업 담당 . Object에 대한 제어권 가짐 .Application Context 인터페이스를 구현한 클래스의 오브젝트
 ```AbstractApplicationContext context=new GenericXmlApplicationContext("classpath:com/anno/user8/applicationContext.xml");```
+#### 프로퍼티 파일 내용 읽어오기: 
+프로퍼티:   
+join.name=\uC774\uD604\uC9C0   
+join.tel=010-1111-1111   
+join.age=24   
+
+프로퍼티 파일 읽어오기 :   	
+<context:property-placeholder location="classpath:com/prop/user.properties"/>   
+프로퍼티파일의 값으로 설정 :
+```
+<bean id="userService" class="com.prop.UserServiceImpl">   
+<property name="name" value="${join.name}"/>   
+<property name="tel" value="${join.tel}"/>   
+<property name="age" value="${join.age}"/>   
+</bean>	   
+```
 
 + 객체 의존성 : new CLASS() 하면 CLASS 객체에 의존성을 가짐 -> **tight coupling**
 + 문제점:    
@@ -100,7 +116,48 @@
         
           
     
-      
-    + Lookup Method Injection 
+    + 자동  주입   
+    	``` <bean id="user" class="com.user6.User" autowire="byType"/> ```
+    	+ 의존 관계 자동설정 (이 방법은 스프링 5.1부터 deprecated 됨)  
+		byName: 프로퍼티와 동일한 이름을 갖는 빈을 주입(setter injection)   
+		byType: 프로퍼티와 동일한 타입을 갖는 빈을 주입(setter injection). 동일한 타입이 하나인 경우만 가능   
+		constructor:생성자를 이용하여 타입이 일치한 빈을 찾아 주입       
+	     
+	 
+    + Lookup Method Injection(컨네이너가 관리하는 빈의 메소드를 재정의하여 컨테이너안의 다른 빈을 검색하는 기능 )    
+    ```
+    <bean id="pizzaShop" class="com.look.PizzaShop">
+		<lookup-method name="makePizza" bean="pizza"/><!-- pizza객체를 리턴 -->
+		<lookup-method name="makeVeggiePizza" bean="veggiePizza"/><!-- veggiePizza객체를 리턴 -->
+    </bean>
+     ```
+    
   + Annotation기반
+ 	+ @Autowired, @Resource 등 애노테이션 활성화 -> 	<context:annotation-config/>
+ 	+ 모든 어노테이션 활성화 -> <context:component-scan base-package="com.anno.user6"/>
+ 	+ service만 스캔->    
+ 	```
+		<context:component-scan base-package="com.anno.user7" use-default-filters="false">
+	 	<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+	 	</context:component-scan>
+	```	
+  	+ @Autowired 를 붙이기(필드, setter, 생성자) : 타입을 이용
+  	+ 동일 타입이 둘 이상이면 동일 이름 빈을 주입 . 동일 이름이 없으면 예외  
+  	+ @Qualifier("이름") @Autowired+@Qualifier=>타입+이름
+  	***
+  	+ @Resource(name="name 속성 안써도되고 써도되고") : 자바제공 어노테이션
+  	+ JDK 9이상부터 @Resource, @PostConstruct, @PreDestroy는 deprecated 됨->해결방법: javax.annotation을 의존성 주입(메이븐)
+  	``` 
+		<dependency> 
+	 		<groupId>javax.annotation</groupId>
+	 		<artifactId>javax.annotation-api</artifactId> 
+	 		<version>1.3.2</version>
+	  	</dependency>
+	```
+	***
+	+ @Inject 자바 제공. 타입으로 의존성 주입. 동일한 타입이 둘 이상이면 동일한 이름으로 의존성 주입
+	+ @Inject와 @Named("userService2")로 같이 씀 
+	***
+	+ @Value("자바"): 파라미터에 값 설정
+  		 
   + 자바 기반   
