@@ -1,0 +1,26 @@
+//프로그래머스 명예의 전당(1)
+//https://school.programmers.co.kr/learn/courses/30/lessons/138477
+
+
+import java.util.*;
+class Solution {
+    public int[] solution(int k, int[] score) {
+        int[] answer = new int[score.length];
+        List<Integer> top=new ArrayList<Integer>();//명예의전당
+        for(int i=0;i<score.length;i++){
+            //명예의 전당 비어있으면 추가
+            if(top.size()<k){
+                top.add(score[i]);
+            }else{
+                int temp=Collections.min(top);
+                if(temp<score[i]){//기존 명예의 전당 최솟값보다 큰값일때
+                    top.remove(Integer.valueOf(temp));
+                    top.add(score[i]);
+                }
+            }
+            //각 일차마다 최솟값 넣기
+            answer[i]=Collections.min(top);
+        }
+        return answer;
+    }
+}
