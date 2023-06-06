@@ -1,0 +1,30 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/64065
+
+```java
+import java.util.*;
+class Solution {
+    public int[] solution(String s) {
+        
+        String[] temp= s.split("\\},\\{");
+        temp[0]=temp[0].replaceAll("[{]","");
+        temp[temp.length-1]=temp[temp.length-1].replaceAll("[}]","");
+       
+        Arrays.sort(temp, (o1, o2) -> 
+                    o1.length() - o2.length());
+        
+        List<Integer> list = new ArrayList<>();
+        
+        for(String str:temp){
+            String[] slist = str.split(",");
+            for(String ss:slist){
+                if(!list.contains(Integer.valueOf(ss))){
+                    list.add(Integer.valueOf(ss));
+                }
+            }
+        }
+        
+        return list.stream().mapToInt(i -> i).toArray();
+    }
+}
+
+```
